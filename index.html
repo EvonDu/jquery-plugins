@@ -8,7 +8,16 @@
     <link href="plugin/images-input/images-input.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <div id="test" name="test1" path="http://localhost/yii-test/extend/uploadBase64.php"></div>
-    <script>$("#test").fileInput({});</script>
+    <div id="test" name="test1" path="http://localhost/yii-test/extend/uploadBase64.php"
+         value='["http://localhost/yii-test/extend/upload/20171130/5a1fc46172712.jpeg","http://localhost/yii-test/extend/upload/20171130/5a1fc46f7e749.jpeg"]'>
+    </div>
+    <script>
+        $("#test").fileInput({
+            change:test
+        });
+        function test(){
+            alert("test");
+        }
+    </script>
 </body>
 </html>

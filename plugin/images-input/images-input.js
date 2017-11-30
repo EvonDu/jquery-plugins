@@ -1,9 +1,14 @@
 $.fn.fileInput = function(options) {
+    //环境变量
+    var setting = {inited:false};
+
     //执行
     main(this,options);
 
     //主调度方法
     function main(_this,options){
+
+
         //调度
         if(options["action"]=="init") {
         }
@@ -17,7 +22,7 @@ $.fn.fileInput = function(options) {
         //获取图片的Base64后，
         getBase64(e,function(data){
             //获取插件
-            var plugin = $(e.target).closest("*[plugin='images-input']");
+            var plugin = $(e.target).closest("*.images-input");
 
             //获取上传url
             var path = $(e.target).attr("path") || "";
@@ -71,13 +76,17 @@ $.fn.fileInput = function(options) {
 
     //初始化方法
     function init(_this){
+        //清空
+        $(_this).empty();
+
         //获取属性
         var name = $(_this).attr("name") || "";
         var path = $(_this).attr("path") || "";
+        var value = $(_this).attr("value") || "";
 
         //添加插件
         var plugin = document.createElement('div');
-        plugin.setAttribute("plugin", "images-input");
+        plugin.setAttribute("class", "images-input");
         $(_this).append(plugin);
 
         //添加显示列表
@@ -106,6 +115,17 @@ $.fn.fileInput = function(options) {
         loading.setAttribute("class", "images-input-loading");
         $(loading).append('<div class="images-input-shade"></div><div class="images-input-icon"></div>');
         $(elements).append(loading);
+
+        //设置初始值
+        var value_init = [];
+        try{value_init = JSON.parse(value);}catch(e){}
+        for(var key in value_init){
+            var path = value_init[key];
+            add(plugin,path);
+        }
+
+        //设置初始化完成
+        setting.inited = true;
     }
 
     //添加图片
@@ -140,6 +160,9 @@ $.fn.fileInput = function(options) {
         //设置新值
         value.push(path);
         input.val(JSON.stringify(value));
+
+        //触发事件
+        event_changed();
     }
 
     //移除图片
@@ -158,6 +181,9 @@ $.fn.fileInput = function(options) {
         var index = values.indexOf(path);
         if (index > -1) values.splice(index, 1);
         input.val(JSON.stringify(values));
+
+        //触发事件
+        event_changed();
     }
 
     //显示加载中
@@ -178,5 +204,17 @@ $.fn.fileInput = function(options) {
         $(loading).css("visibility","hidden");                //隐藏加载中框
         $(btn).removeAttr("disabled");                        //设置按钮可点击
         $(btn).css('pointer-events', "auto");                 //设置按钮内部元素点击有效
+    }
+
+    //事件：值改变
+    function event_changed(){
+        //判断初始化是否完成
+        if(setting.inited== false)
+            return;
+
+        //触发配置事件
+        if(options.change && typeof(options.change) == "function"){
+            options.change();
+        }
     }
 }
