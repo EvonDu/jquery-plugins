@@ -19,13 +19,16 @@ $.fn.fileInput = function(options) {
             //获取插件
             var plugin = $(e.target).closest("*[plugin='images-input']");
 
+            //获取上传url
+            var path = $(e.target).attr("path") || "";
+
             //显示正在上传
             loading_show(plugin)
 
             //上传二进制
             $.ajax({
-                type: 'post',                                   //提交的方式
-                url:"http://localhost/yii-test/extend/uploadBase64.php",
+                type: 'post',//提交的方式
+                url:path,
                 data:{
                     img:data
                 },
@@ -70,6 +73,7 @@ $.fn.fileInput = function(options) {
     function init(_this){
         //获取属性
         var name = $(_this).attr("name") || "";
+        var path = $(_this).attr("path") || "";
 
         //添加插件
         var plugin = document.createElement('div');
@@ -91,6 +95,7 @@ $.fn.fileInput = function(options) {
         span.innerHTML = "上传图片";
         var input = document.createElement('input');
         input.setAttribute("type", "file");
+        input.setAttribute("path", path);
         $(input).on("change",change);
         div.appendChild(span);
         div.appendChild(input);
