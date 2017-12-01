@@ -1,4 +1,4 @@
-$.fn.fileInput = function(options) {
+$.fn.imagesInput = function(options) {
     //环境变量
     var setting = {inited:false};
 
@@ -7,8 +7,6 @@ $.fn.fileInput = function(options) {
 
     //主调度方法
     function main(_this,options){
-
-
         //调度
         if(options["action"]=="init") {
         }
@@ -159,10 +157,11 @@ $.fn.fileInput = function(options) {
 
         //设置新值
         value.push(path);
-        input.val(JSON.stringify(value));
+        var value_new = JSON.stringify(value);
+        input.val(value_new);
 
         //触发事件
-        event_changed();
+        event_changed(value_new);
     }
 
     //移除图片
@@ -173,17 +172,18 @@ $.fn.fileInput = function(options) {
         });
 
         //获取input取值
-        var values = null;
+        var value = null;
         var input = $(plugin).find(".images-input-value");
-        try{ values = JSON.parse(input.val()); } catch (e){ values = [] }
+        try{ value = JSON.parse(input.val()); } catch (e){ value = [] }
 
         //移除值并JSON化回input
-        var index = values.indexOf(path);
-        if (index > -1) values.splice(index, 1);
-        input.val(JSON.stringify(values));
+        var index = value.indexOf(path);
+        if (index > -1) value.splice(index, 1);
+        var value_json = JSON.stringify(value);
+        input.val(value_json);
 
         //触发事件
-        event_changed();
+        event_changed(value_json);
     }
 
     //显示加载中
@@ -207,14 +207,18 @@ $.fn.fileInput = function(options) {
     }
 
     //事件：值改变
-    function event_changed(){
+    function event_changed(value){
         //判断初始化是否完成
         if(setting.inited== false)
             return;
 
+        if(options.binding != undefined){
+            options.binding = value;
+        }
+
         //触发配置事件
         if(options.change && typeof(options.change) == "function"){
-            options.change();
+            options.change(value);
         }
     }
 }
