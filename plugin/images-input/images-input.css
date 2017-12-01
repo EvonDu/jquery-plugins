@@ -1,6 +1,8 @@
 div.images-input{
     position: relative;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 div.images-input .images-input-elements{
@@ -64,8 +66,6 @@ div.images-input .images-input-elements .images-input-element img{
 }
 
 div.images-input .images-input-button{
-    width: 75px;
-    height: 20px;
     color: white;
     position: relative;
     background-color: #337ab7;

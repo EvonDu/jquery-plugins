@@ -33,11 +33,11 @@ $.fn.imagesInput = function(options) {
                 type: 'post',//提交的方式
                 url:path,
                 data:{
-                    img:data
+                    base64:data
                 },
                 dataType: "JSON",
                 success:function(result){
-                    if(result.state.return_code == 0){
+                    if(result.state.code == 0){
                         var path = result.data;
                         //添加图片
                         add(plugin,path);
