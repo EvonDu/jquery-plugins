@@ -1,3 +1,11 @@
+/*
+ @Author: Evon
+ @GitHub: https://github.com/EvonDu/jquery-plugins
+ @Date: 2017/12/2
+ @Last Modified by: Evon
+ @Last Modified time: 2017/12/2
+ */
+
 $.fn.imagesInput = function(options) {
     //环境变量
     var setting = {inited:false};
